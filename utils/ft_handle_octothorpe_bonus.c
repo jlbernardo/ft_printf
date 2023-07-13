@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 00:19:40 by julberna          #+#    #+#             */
-/*   Updated: 2023/07/10 16:15:18 by julberna         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:18:52 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	ft_putnbr_base(unsigned long int nbr, char *base);
 static int	ft_handle_hex(char *base, unsigned long int nbr);
 
-int	ft_handle_octothorpe_bonus(char specifier, va_list args)
+int	ft_handle_octothorpe(char specifier, va_list args)
 {
 	int							numbers_printed;
 	unsigned long int			nbr;

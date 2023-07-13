@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 00:10:29 by julberna          #+#    #+#             */
-/*   Updated: 2023/07/10 19:39:19 by julberna         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:03:27 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	ft_handle_ptr(va_list args);
 int	ft_handle_str(va_list args);
 int	ft_handle_unsigned_int(va_list args);
 int	ft_handle_upper_hex(va_list args);
-int	ft_handle_space_bonus(va_list args, char specifier);
-int	ft_handle_plus_bonus(va_list args);
-int	ft_handle_octothorpe_bonus(char specifier, va_list args);
+int	ft_handle_space(va_list args, char specifier);
+int	ft_handle_plus(va_list args);
+int	ft_handle_octothorpe(char specifier, va_list args);
 
 #endif

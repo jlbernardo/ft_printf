@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                      :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 21:24:00 by julberna          #+#    #+#             */
-/*   Updated: 2023/07/07 19:42:05 by julberna         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:44:04 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "./ft_printf.h"
 
 static int	ft_print_string(const char *str, va_list args);
 static int	ft_handle_specifier(char c, va_list args);
+static int	ft_handle_flag(const char **str, va_list args, int char_count);
 
 int	ft_printf(const char *str, ...)
 {
@@ -32,23 +33,53 @@ int	ft_printf(const char *str, ...)
 static int	ft_print_string(const char *str, va_list args)
 {
 	int	char_count;
-	int	i;
 
 	char_count = 0;
-	i = 0;
-	while (str[i] != '\0')
+	while (*str != '\0')
 	{
-		if (str[i] == '%')
+		if (*str == '%')
 		{
-			char_count += ft_handle_specifier(str[i + 1], args);
-			i++;
+			str++;
+			if (*str == ' ' || *str == '+' || *str == '#')
+				char_count += ft_handle_flag(&str, args, 0);
+			else
+				char_count += ft_handle_specifier(*str, args);
+			str++;
 		}
 		else
 		{
-			ft_putchar_fd(str[i], 1);
+			ft_putchar_fd(*str, 1);
 			char_count++;
+			str++;
 		}
-		i++;
+	}
+	return (char_count);
+}
+
+static int	ft_handle_flag(const char **str, va_list args, int char_count)
+{
+	if (**str == ' ')
+	{
+		while (**str == ' ')
+			(*str)++;
+		if (**str == 'd' || **str == 'i')
+			char_count += ft_handle_space(args, 'i');
+		else if (**str == 's')
+			char_count += ft_handle_space(args, 's');
+	}
+	else if (**str == '+')
+	{
+		while (**str == '+')
+			(*str)++;
+		if (**str == 'd' || **str == 'i')
+			char_count += ft_handle_plus(args);
+	}
+	else if (**str == '#')
+	{
+		while (**str == '#')
+			(*str)++;
+		if (**str == 'x' || **str == 'X')
+			char_count += ft_handle_octothorpe(**str, args);
 	}
 	return (char_count);
 }

@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 23:48:14 by julberna          #+#    #+#             */
-/*   Updated: 2023/07/10 19:30:47 by julberna         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:43:00 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_print_string(const char *str, va_list args);
 static int	ft_handle_specifier(char c, va_list args);
-static int	ft_handle_flag(const char *str, va_list args);
+static int	ft_handle_flag(const char **str, va_list args, int char_count);
 
 int	ft_printf(const char *str, ...)
 {
@@ -33,53 +33,53 @@ int	ft_printf(const char *str, ...)
 static int	ft_print_string(const char *str, va_list args)
 {
 	int	char_count;
-	int	i;
 
 	char_count = 0;
-	i = 0;
-	while (str[i] != '\0')
+	while (*str != '\0')
 	{
-		if (str[i] == '%')
+		if (*str == '%')
 		{
-			if (str[i + 1] == ' ' || str[i + 1] == '+' || str[i + 1] == '#')
-				char_count += ft_handle_flag(&str[i++], args);
+			str++;
+			if (*str == ' ' || *str == '+' || *str == '#')
+				char_count += ft_handle_flag(&str, args, 0);
 			else
-				char_count += ft_handle_specifier(str[i + 1], args);
-			i++;
+				char_count += ft_handle_specifier(*str, args);
+			str++;
 		}
 		else
 		{
-			ft_putchar_fd(str[i], 1);
+			ft_putchar_fd(*str, 1);
 			char_count++;
+			str++;
 		}
-		i++;
 	}
 	return (char_count);
 }
 
-static int	ft_handle_flag(const char *str, va_list args)
+static int	ft_handle_flag(const char **str, va_list args, int char_count)
 {
-	int	i;
-	int	char_count;
-
-	i = 0;
-	char_count = 0;
-	if (str[i + 1] == ' ')
+	if (**str == ' ')
 	{
-		if (str[i + 2] == 'd' || str[i + 2] == 'i')
-			char_count += ft_handle_space_bonus(args, 'i');
-		else if (str[i + 2] == 's')
-			char_count += ft_handle_space_bonus(args, 's');
+		while (**str == ' ')
+			(*str)++;
+		if (**str == 'd' || **str == 'i')
+			char_count += ft_handle_space(args, 'i');
+		else if (**str == 's')
+			char_count += ft_handle_space(args, 's');
 	}
-	else if (str[i + 1] == '+')
+	else if (**str == '+')
 	{
-		if (str[i + 2] == 'd' || str[i + 2] == 'i')
-			char_count += ft_handle_plus_bonus(args);
+		while (**str == '+')
+			(*str)++;
+		if (**str == 'd' || **str == 'i')
+			char_count += ft_handle_plus(args);
 	}
-	else if (str[i + 1] == '#')
+	else if (**str == '#')
 	{
-		if (str[i + 2] == 'x' || str[i + 2] == 'X')
-			char_count += ft_handle_octothorpe_bonus(str[i + 2], args);
+		while (**str == '#')
+			(*str)++;
+		if (**str == 'x' || **str == 'X')
+			char_count += ft_handle_octothorpe(**str, args);
 	}
 	return (char_count);
 }

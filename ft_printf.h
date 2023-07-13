@@ -14,6 +14,7 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include <stddef.h>
 # include "./libft/libft.h"
 
 int	ft_printf(const char *str, ...);
@@ -25,5 +26,8 @@ int	ft_handle_ptr(va_list args);
 int	ft_handle_str(va_list args);
 int	ft_handle_unsigned_int(va_list args);
 int	ft_handle_upper_hex(va_list args);
+int	ft_handle_space(va_list args, char specifier);
+int	ft_handle_plus(va_list args);
+int	ft_handle_octothorpe(char specifier, va_list args);
 
 #endif

@@ -1,43 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_handle_space_bonus.c                            :+:      :+:    :+:   */
+/*   ft_handle_plus_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 00:19:00 by julberna          #+#    #+#             */
-/*   Updated: 2023/07/10 21:49:34 by julberna         ###   ########.fr       */
+/*   Created: 2023/07/10 00:19:22 by julberna          #+#    #+#             */
+/*   Updated: 2023/07/11 16:18:47 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_printf_bonus.h"
 
 static int	ft_handle_int_bonus(long int n);
-static int	ft_handle_str_bonus(char *str);
 
-int	ft_handle_space_bonus(va_list args, char specifier)
+int	ft_handle_plus(va_list args)
 {
 	int			numbers_printed;
 	long int	n;
-	char		*str;
 
 	numbers_printed = 0;
-	if (specifier == 'i')
+	n = va_arg(args, int);
+	if (n >= 0)
 	{
-		n = va_arg(args, int);
-		if (n >= 0)
-		{
-			ft_putchar_fd(' ', 1);
-			numbers_printed += ft_handle_int_bonus(n) + 1;
-		}
-		else
-			numbers_printed += ft_handle_int_bonus(n);
+		ft_putchar_fd('+', 1);
+		numbers_printed++;
 	}
-	else if (specifier == 's')
-	{
-		str = va_arg(args, char *);
-		numbers_printed += ft_handle_str_bonus(str);
-	}
+	numbers_printed += ft_handle_int_bonus(n);
 	return (numbers_printed);
 }
 
@@ -58,21 +47,4 @@ static int	ft_handle_int_bonus(long int n)
 		n /= 10;
 	}
 	return (numbers_printed);
-}
-
-static int	ft_handle_str_bonus(char *str)
-{
-	int		len;
-
-	if (str == NULL)
-	{
-		ft_putstr_fd("(null)", 1);
-		return (6);
-	}
-	else
-	{
-		len = ft_strlen(str);
-		ft_putstr_fd(str, 1);
-		return (len);
-	}
 }
